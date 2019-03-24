@@ -1,0 +1,67 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+}
+input::-webkit-input-placeholder {color: #999999; }
+input:-ms-input-placeholder{color: #999999;}
+input:-moz-placeholder {color: #999999;}
+input::-moz-placeholder {color: #999999;}
+input::-ms-clear{display:none;}/*去掉ie8，9中input[type="text"]后面的X图标*/
+input::-ms-reveal{display:none;}/*密码框后有小眼睛图标*/
+input{vertical-align:middle;outline: none}
+input::-webkit-contacts-auto-fill-button {visibility: hidden;display: none !important;pointer-events: none;position: absolute;right: 0;}/*隐藏safair小人头*/
+
+textarea::-webkit-input-placeholder {color: #999999; }
+textarea:-ms-input-placeholder{color: #999999;}
+textarea:-moz-placeholder {color: #999999;}
+textarea::-moz-placeholder {color: #999999;}
+ul{ list-style-type:none;}
+a{text-decoration: none;}
+
+.clearfix:before,.clearfix:after { content: "";display: block; clear: both;}
+.clearfix {zoom: 1;}
+
+/* 缩小一半空间，用于适应高分屏 */
+.flux-container {
+    position: absolute;
+    width : 50%;
+    height : 50%;
+    background-color: #255625;
+    /* 因为scale是基于中心放大的，所以还需要改变位置*/
+    left : 25%;
+    top : 25%;
+    min-width : 1400px;
+    min-height : 830px;
+}
+/* 放大显示比例，用于铺满整个屏幕 */
+.flux-scale {
+    transform: scale(0.9, 0.9);
+    -ms-transform:scale(0.9, 0.9); 	/* IE 9 */
+    -moz-transform:scale(0.9, 0.9); 	/* Firefox */
+    -webkit-transform:scale(0.9, 0.9); /* Safari 和 Chrome */
+    -o-transform:scale(0.9, 0.9);
+}
+@media screen and (max-width: 1200px) {
+    .flux-scale {
+        transform: scale(0.75, 0.75);
+        -ms-transform:scale(0.75, 0.75); 	/* IE 9 */
+        -moz-transform:scale(0.75, 0.75); 	/* Firefox */
+        -webkit-transform:scale(0.75, 0.75); /* Safari 和 Chrome */
+        -o-transform:scale(0.75, 0.75);
+    }
+}
+
+.title{
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+    background-color: #363845;
+    color: #ffffff;
+    font-size: 25px;
+
+}
+.form_down_left,.form_down_right,.form_up_left,.form_up_right{
+    float: left;
+    width: 50%;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>分类管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../lay/css/font.css">
+    <link rel="stylesheet" href="../../lay/css/xadmin.css">
+    <link rel="stylesheet" href="../../lay/lib/layui/css/layui.css">
+</head>
+
+<body>
+<div class="x-nav">
+    <span class="layui-breadcrumb" lay-separator="/">
+        <a>
+            <cite>首页</cite>
+        </a>
+        <a>
+            <cite>管理</cite>
+        </a>
+        <a>
+          <cite>分类管理</cite>
+        </a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <form id="query_form" class="layui-form" onsubmit="return false;">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-mid" for="firstType">项目类型</label>
+                    <div class="layui-input-inline" style="">
+                        <select id="firstType" name="firstType" lay-filter="firstType">
+
+                        </select>
+                    </div>
+                    <label class="layui-form-mid" for="secondType"></label>
+                    <div class="layui-input-inline" style="">
+                        <select id="secondType" name="secondType">
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-mid">状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="status" name="status">
+                            <option value="">请选择</option>
+                            <option value="1">已发布</option>
+                            <option value="3">已删除</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button type="button" id="searchBtn" class="layui-btn" onclick="typeList()" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <xblock>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','./add.html?type=0',720,550)"><i class="layui-icon"></i>添加</button>
+        <span id="totalNum" class="x-right" style="line-height:40px"></span>
+    </xblock>
+    <table id="worker" class="layui-table">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>项目类型</th>
+            <th>项目介绍</th>
+            <th>办理流程</th>
+            <th>分润规则</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="typeList">
+
+        </tbody>
+    </table>
+    <div id="typePageDiv" class="page">
+    </div>
+</div>
+
+<script type="text/javascript" src="../../lay/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../lay/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../js/interface_li.js"></script>
+<script type="text/javascript" src="../../js/footer.js"></script>
+<script type="text/javascript" src="../../lay/js/xadmin.js"></script>
+<script type="text/javascript" src="../../lay/js/pagination.js"></script>
+<script type="text/javascript" src="../../js/type/list.js"></script>
+
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+<script src="../../js/html5shiv.js"></script>
+<script src="../../js/respond.min.js"></script>
+<![endif]-->
+</body>
+</html>

@@ -4,7 +4,6 @@ $(document).ready(function () {
         layer = layui.layer;
         form = layui.form;
         element = layui.element;
-        statProduct();
         form.on('submit(sreach)', function (data) {
             statList(null);
         });
@@ -84,28 +83,6 @@ function statList(cur_page) {
     });
 }
 
-function statProduct() {
-    $.ajax({
-        url: baseUrl + "/operation/product/stat",
-        type: "post",
-        crossDomain: true == !(document.all),
-        beforeSend: function (request) {
-            request.setRequestHeader("OperaAuthorization", TOKEN);
-        },
-        success: function (resultData) {
-            if (resultData.returnCode == 200) {
-                if (resultData.data != null) {
-                    $("#totalCount").html(resultData.data.totalCount);
-                    $("#doingCount").html(resultData.data.doingCount);
-                    $("#finishCount").html(resultData.data.finishCount);
-                }
-            }
-            return false;
-        },
-        complete: function () {
-        }
-    });
-}
 
 /**
  * 编辑页回调主页面-入口方法

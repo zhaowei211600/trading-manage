@@ -47,6 +47,8 @@ function customList(cur_page) {
                         var content = list[i];
                         var status = '';
                         var passTime = '';
+                        var userType = '';
+                        var authStatus = '';
                         if(content.status == '0'){
                             status = '待审核';
                         }else if(content.status == '1'){
@@ -57,6 +59,21 @@ function customList(cur_page) {
                             status = '已停用';
                         }
 
+                        if(content.type == '2'){
+                            userType = '会员代理';
+                        }else if(content.type == '3'){
+                            userType = '分柜';
+                        }else if(content.type == '4'){
+                            userType = '掌柜';
+                        }else{
+                            userType = '注册游客';
+                        }
+                        if(content.authStatus == '1'){
+                            authStatus = '已认证';
+                        }else{
+                            authStatus = '未认证';
+                        }
+
                         if(content.passTime != 'null' && content.passTime != null){
                             passTime = content.passTime;
                         }
@@ -64,31 +81,42 @@ function customList(cur_page) {
                         tbody += "<td>" + (i+1) + "</td>";
                         tbody += "<td>" + content.phone + "</td>";
                         tbody += "<td>" + content.registerTime + "</td>";
-                        tbody += "<td>" + passTime + "</td>";
-                        tbody += "<td>" ;
-                        tbody += "<a title=\"证件照\" id=\"cardImgFront\" onclick=\"showImg('"+content.cardImgFront+"',this)\" href=\"javascript:;\">证件照A面</a>" ;
-                        tbody += "</td>";
-                        tbody += "<td>" ;
-                        tbody += "<a title=\"证件照\" onclick=\"showImg('"+content.cardImgBack+"',this)\" href=\"javascript:;\">证件照B面</a>" ;
-                        tbody += "</td>";
+                        tbody += "<td>" + authStatus + "</td>";
+                        tbody += "<td>" + userType + "</td>";
                         tbody += "<td>" + status + "</td>";
-                        if(content.status == '1'){
+                        if(content.authStatus == '1' && content.status == '1'){
                             tbody += "<td class=\"td-manage\">" ;
                             tbody += "<a title=\"停用\" onclick=\"stopUser("+content.id+")\" href=\"javascript:;\">\n" +
                                 "                    <i class=\"layui-icon\">&#x1007;</i>\n" +
                                 "                </a>" ;
+                            tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('用户详情','./detail.html?userId="+content.id+"',720,300)\" href=\"javascript:;\">\n" +
+                                "<i class=\"layui-icon\">&#xe642;</i></a>";
+
                             tbody += "<a title=\"重置密码\" onclick=\"resetUser("+content.id+")\" href=\"javascript:;\">\n" +
                                 "                    <i class=\"layui-icon\">重置密码</i>\n" +
                                 "                </a>" ;
+
                             tbody += "</td>";
-                        }else if(content.status == '0'){
+                        }else if(content.authStatus == '0' && content.status == '1'){
                             tbody += "<td class=\"td-manage\">" ;
-                            tbody += "<a title=\"认证通过\" onclick=\"confirmUser("+content.id+")\" href=\"javascript:;\">\n" +
-                                "                    <i class=\"layui-icon\">&#xe672;</i>\n" +
+                            tbody += "<a title=\"停用\" onclick=\"stopUser("+content.id+")\" href=\"javascript:;\">\n" +
+                                "                    <i class=\"layui-icon\">&#x1007;</i>\n" +
                                 "                </a>" ;
+                            tbody += "<a title=\"去认证\"  onclick=\"x_admin_show('用户详情','./audit.html?userId="+content.id+"',750,615)\" href=\"javascript:;\">\n" +
+                                "<i class=\"layui-icon\">&#xe642;</i></a>";
+                            tbody += "</td>";
+                        }else if(content.status == '2'){
+                            tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"启用\" onclick=\"enableUser("+content.id+")\" href=\"javascript:;\">\n" +
+                                "                    <i class=\"layui-icon\">&#x1005;</i>\n" +
+                                "                </a>" ;
+                            tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('用户详情','./detail.html?userId="+content.id+"',720,300)\" href=\"javascript:;\">\n" +
+                                "<i class=\"layui-icon\">&#xe642;</i></a>";
                             tbody += "</td>";
                         }else{
                             tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('用户详情','./detail.html?userId="+content.id+"',720,300)\" href=\"javascript:;\">\n" +
+                                "<i class=\"layui-icon\">&#xe642;</i></a>";
                             tbody += "</td>";
                         }
                         tbody += "</tr>";
@@ -149,7 +177,28 @@ function stopUser(id) {
             },
             success: function (resultData) {
                 if (resultData.returnCode == 200) {
-                    layer.msg('用户认证成功!',{icon:1,time:1000});
+                    layer.msg('用户已停用!',{icon:1,time:1000});
+                    customList(null);
+                }else {
+                    layer.msg(resultData.returnMessage,{icon:2,time:1000});
+                }
+            }
+        });
+    });
+}
+
+function enableUser(id) {
+    layer.confirm('确认要启用该用户吗？', {skin: 'layui-layer-molv'}, function(index){
+        $.ajax({
+            url: baseUrl + "/operation/custom/enable?userId=" + id,
+            type: "post",
+            crossDomain: true == !(document.all),
+            beforeSend: function (request) {
+                request.setRequestHeader("OperaAuthorization", TOKEN);
+            },
+            success: function (resultData) {
+                if (resultData.returnCode == 200) {
+                    layer.msg('用户启用成功!',{icon:1,time:1000});
                     customList(null);
                 }else {
                     layer.msg(resultData.returnMessage,{icon:2,time:1000});
