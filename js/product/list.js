@@ -80,9 +80,10 @@ function productList(cur_page) {
                             tbody += "<td> -- </td>";
                         }else{
                             tbody += "<td class=\"td-manage\">" ;
-                            tbody += "<a title=\"详情\" onclick=\"x_admin_show('设置接单人','./choose.html?productId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">\n" +
+                            /*tbody += "<a title=\"详情\" onclick=\"x_admin_show('设置接单人','./choose.html?productId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">\n" +
                                 "                    <i class=\"layui-icon\">&#xe66f;</i>\n" +
-                                "                </a></td>";
+                                "                </a>";*/
+                            tbody += "</td>";
                         }
                         tbody += "</tr>";
                     }

@@ -27,8 +27,8 @@ function typeList(cur_page) {
     param["pageNum"] = cur_page;
     param["pageSize"] = 10;
     param['status'] = $('#status').val();
-    param['firstType'] = $("#firstType").val();
-    param['secondType'] = $("#secondType").val();
+    param['parentId'] = $("#firstType").val();
+    param['id'] = $("#secondType").val();
     var loadingIndex = layer.load(1);
     $.ajax({
         data: param,

@@ -23,7 +23,7 @@ function customList(cur_page) {
     param["pageNum"] = cur_page;
     param["pageSize"] = 10;
     param['phone'] = $('#phone').val();
-    param['status'] = $('#status').val();
+    param['authStatus'] = $('#authStatus').val();
     param['registerTimeStart'] = $("#startDate").val();
     param['registerTimeEnd'] = $("#endDate").val();
     param['passTimeStart'] = $("#confirmStartDate").val();
@@ -49,14 +49,14 @@ function customList(cur_page) {
                         var passTime = '';
                         var userType = '';
                         var authStatus = '';
-                        if(content.status == '0'){
-                            status = '待审核';
-                        }else if(content.status == '1'){
-                            status = '审核通过';
-                        }else if(content.status == '2'){
-                            status = '审核失败';
-                        }else if(content.status == '3'){
-                            status = '已停用';
+                        if(content.authStatus == '0'){
+                            authStatus = '待提交';
+                        }else if(content.authStatus == '1'){
+                            authStatus = '待审核';
+                        }else if(content.authStatus == '2'){
+                            authStatus = '审核通过';
+                        }else if(content.authStatus == '3'){
+                            authStatus = '审核失败';
                         }
 
                         if(content.type == '2'){
@@ -68,10 +68,10 @@ function customList(cur_page) {
                         }else{
                             userType = '注册游客';
                         }
-                        if(content.authStatus == '1'){
-                            authStatus = '已认证';
+                        if(content.status == '1'){
+                            status = '正常';
                         }else{
-                            authStatus = '未认证';
+                            status = '停用';
                         }
 
                         if(content.passTime != 'null' && content.passTime != null){
@@ -84,7 +84,7 @@ function customList(cur_page) {
                         tbody += "<td>" + authStatus + "</td>";
                         tbody += "<td>" + userType + "</td>";
                         tbody += "<td>" + status + "</td>";
-                        if(content.authStatus == '1' && content.status == '1'){
+                        if(content.authStatus == '0' && content.status == '1'){
                             tbody += "<td class=\"td-manage\">" ;
                             tbody += "<a title=\"停用\" onclick=\"stopUser("+content.id+")\" href=\"javascript:;\">\n" +
                                 "                    <i class=\"layui-icon\">&#x1007;</i>\n" +
@@ -97,7 +97,7 @@ function customList(cur_page) {
                                 "                </a>" ;
 
                             tbody += "</td>";
-                        }else if(content.authStatus == '0' && content.status == '1'){
+                        }else if(content.authStatus == '1' && content.status == '1'){
                             tbody += "<td class=\"td-manage\">" ;
                             tbody += "<a title=\"停用\" onclick=\"stopUser("+content.id+")\" href=\"javascript:;\">\n" +
                                 "                    <i class=\"layui-icon\">&#x1007;</i>\n" +

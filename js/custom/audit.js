@@ -16,10 +16,10 @@ $(function () {
 
         //监听提交
         form.on('submit(userAuditPass)', function (data) {
-            auditUser(1)
+            auditUser(2)
         });
         form.on('submit(userAuditFailed)', function (data) {
-            auditUser(2)
+            auditUser(3)
         });
     });
 
