@@ -7,7 +7,7 @@
 	font-size: 12px;
 }
 a{
-	text-decoration: none;
+	text-decoration: none;color: blue;!important;
 }
 html{
 	width: 100%;

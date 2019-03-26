@@ -84,17 +84,17 @@ function customList(cur_page) {
                         tbody += "<td>" + authStatus + "</td>";
                         tbody += "<td>" + userType + "</td>";
                         tbody += "<td>" + status + "</td>";
-                        tbody += "<td class=\"td-manage\">" ;
-                        if(content.status == '1'){
-                            tbody += "<a title=\"停用\" onclick=\"stopUser("+content.id+")\" href=\"javascript:;\">停用</a>" ;
-                        }else {
-                            tbody += "<a title=\"启用\" onclick=\"enableUser("+content.id+")\" href=\"javascript:;\">启用</a>" ;
+                        if(content.authStatus == '0'){
+                            tbody += "<td class=\"td-manage\">--</td>";
+                        }else if(content.authStatus == '1'){
+                            tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"去认证\"  onclick=\"x_admin_show('用户详情','./audit.html?userId="+content.id+"',750,615)\" href=\"javascript:;\">认证</a>";
+                            tbody += "</td>";
+                        }else{
+                            tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('认证详情','./audit-detail.html?userId="+content.id+"',750,615)\" href=\"javascript:;\">详情</a>";
+                            tbody += "</td>";
                         }
-                        tbody += "|"
-                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('用户详情','./detail.html?userId="+content.id+"',720,300)\" href=\"javascript:;\">编辑</a>";
-                        tbody += "|"
-                        tbody += "<a title=\"重置密码\" onclick=\"resetUser("+content.id+")\" href=\"javascript:;\">重置密码</a>" ;
-                        tbody += "</td>";
                         tbody += "</tr>";
                     }
                     $('#customList').html(tbody);

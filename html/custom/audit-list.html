@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>用户管理</title>
+    <title>用户认证</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -24,7 +24,7 @@
             <cite>管理</cite>
         </a>
         <a>
-          <cite>用户管理</cite>
+          <cite>用户认证</cite>
         </a>
     </span>
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
@@ -71,7 +71,7 @@
                         <select name="authStatus" id="authStatus" lay-verify="required">
                             <option value="">全部</option>
                             <option value="0">待提交</option>
-                            <option value="1">待审核</option>
+                            <option value="1" selected="selected">待审核</option>
                             <option value="2">审核通过</option>
                             <option value="3">审核失败</option>
                         </select>
@@ -114,7 +114,7 @@
 <script type="text/javascript" src="../../js/footer.js"></script>
 <script type="text/javascript" src="../../lay/js/xadmin.js"></script>
 <script type="text/javascript" src="../../lay/js/pagination.js"></script>
-<script type="text/javascript" src="../../js/custom/custom.js"></script>
+<script type="text/javascript" src="../../js/custom/audit-list.js"></script>
 
 <script>
     $(function(){
