@@ -48,7 +48,7 @@ function typeList(cur_page) {
                         var content = list[i];
                         var status = '';
                         var createTime = '';
-                        var typeName = content.parentTypeName + '/' + content.typeName;
+                        var typeName = '';
 
                         if(content.status == '2'){
                             status = '已确认';
@@ -57,6 +57,14 @@ function typeList(cur_page) {
                         }else{
                             status = '待审核'
                         }
+                        var type = '';
+                        if(content.parentId == '0'){
+                            type = '一级';
+                            typeName =  content.typeName;
+                        }else{
+                            type = '二级';
+                            typeName = content.parentTypeName + '/' + content.typeName;
+                        }
 
                         if(content.createTime != 'null' && content.createTime != null){
                             createTime = content.createTime;
@@ -64,6 +72,7 @@ function typeList(cur_page) {
                         tbody += "<tr>";
                         tbody += "<td>" + (i+1) + "</td>";
                         tbody += "<td>" + typeName + "</td>";
+                        tbody += "<td>" + type + "</td>";
                         tbody += "<td>" + content.typeDesc + "</td>";
                         tbody += "<td>" + content.process + "</td>";
                         tbody += "<td>" + content.rules + "</td>";
@@ -127,18 +136,28 @@ function showSecondType() {
             request.setRequestHeader("OperaAuthorization", TOKEN);
         },
         success: function (resultData) {
+            var tbody = "<option value=\"\">请选择</option>";
             if (resultData.returnCode == 200) {
                 var list = resultData.data;
-                var tbody = "<option value=\"\">请选择</option>";
                 for (var i = 0; i < list.length; i++) {
                     var content = list[i];
                     tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
                 }
-                $("#secondType").html(tbody);
-                form.render('select');
             }
+            $("#secondType").html(tbody);
+            form.render('select');
         }
     });
+}
+
+/**
+ * 编辑页回调主页面-入口方法
+ * @param icon(图标类型)
+ * @param msg(信息)
+ */
+function initPage(icon, msg) {
+    layer.msg(msg,{icon:icon,time:2000});
+    typeList(null);
 }
 
 

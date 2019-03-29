@@ -5,7 +5,7 @@ $(function () {
         form = layui.form, layer = layui.layer;
         showFirstType();
         //监听提交
-        form.on('submit(saveType)', function (data) {
+        form.on('submit(saveSecondType)', function (data) {
             var parentId = $("#firstType").val();
             var patentTypeName = $("#firstType").find("option:selected").text();
             alert(patentTypeName);
@@ -77,12 +77,3 @@ function showFirstType() {
     });
 }
 
-/**
- * 编辑页回调主页面-入口方法
- * @param icon(图标类型)
- * @param msg(信息)
- */
-function initPage(icon, msg) {
-    layer.msg(msg,{icon:icon,time:2000});
-    typeList(null);
-}

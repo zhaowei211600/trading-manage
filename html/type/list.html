@@ -34,7 +34,7 @@
         <form id="query_form" class="layui-form" onsubmit="return false;">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-mid" for="firstType">项目类型</label>
+                    <label class="layui-form-mid" for="firstType">类型名称</label>
                     <div class="layui-input-inline" style="">
                         <select id="firstType" name="firstType" lay-filter="firstType">
 
@@ -67,14 +67,16 @@
         </form>
     </div>
     <xblock>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','./add.html?type=0',720,550)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加分类','./add-first.html?type=0',720,550)"><i class="layui-icon"></i>一级分类</button>
+        <button class="layui-btn" onclick="x_admin_show('添加分类','./add-second.html?type=0',720,550)"><i class="layui-icon"></i>二级分类</button>
         <span id="totalNum" class="x-right" style="line-height:40px"></span>
     </xblock>
     <table id="worker" class="layui-table">
         <thead>
         <tr>
             <th>序号</th>
-            <th>项目类型</th>
+            <th>类型名称</th>
+            <th>级别</th>
             <th>项目介绍</th>
             <th>办理流程</th>
             <th>分润规则</th>
