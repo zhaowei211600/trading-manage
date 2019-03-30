@@ -30,14 +30,14 @@ $(function () {
 
             var acceptingSide = $("#acceptingSide").val();
 
-            var process = $("#process").val();
+            var attachmentDesc = $("#attachmentDesc").val();
             var tradeDetail = $("#tradeDetail").val();
             var fileNameList = $("#fileNameList").val();
             var publisher = $("#publisher").val();
             var params = {'productId': productId, 'name': productName, 'budget': budget,
                 'area': address, 'requirementNo': requirementNo, 'descImg':descImg,
                 'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,
-                'process':process, 'tradeDetail':tradeDetail, 'productType':'1',
+                'attachmentDesc':attachmentDesc, 'tradeDetail':tradeDetail, 'productType':'1',
                 'fileNameList':fileNameList, 'publisher':publisher};
             var loadingIndex = layer.load(1);
             $.ajax({
