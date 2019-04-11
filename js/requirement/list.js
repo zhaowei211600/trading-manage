@@ -81,11 +81,11 @@ function requirementList(cur_page) {
                         tbody += "<td>" + userStatus + "</td>";
                         if(content.status == '1'){
                             tbody += "<td class=\"td-manage\">" ;
-                            tbody += "<a title=\"审核\"  onclick=\"x_admin_show('需求确认','./detail.html?id="+content.id+"',720,550)\" href=\"javascript:;\">\n" +
-                                "<i class=\"layui-icon\">&#xe642;</i></a>";
+                            tbody += "<a title=\"审核\"  onclick=\"x_admin_show('需求确认','./detail.html?id="+content.id+"',720,550)\" href=\"javascript:;\">审核</a>";
                             tbody += "</td>";
                         }else{
-                            tbody += "<td class=\"td-manage\">--" ;
+                            tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"查看\"  onclick=\"x_admin_show('需求确认','./show.html?id="+content.id+"',720,550)\" href=\"javascript:;\">查看</a>";
                             tbody += "</td>";
                         }
                         tbody += "</tr>";

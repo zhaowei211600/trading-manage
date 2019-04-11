@@ -42,13 +42,9 @@ function productList(cur_page) {
                         var content = list[i];
                         var status = '';
                         if(content.status == '1'){
-                            status = '待接单';
+                            status = '已发布';
                         }else if(content.status == '2'){
-                            status = '进行中';
-                        }else if(content.status == '3'){
-                            status = '待验收';
-                        }else if(content.status == '4'){
-                            status = '已验收';
+                            status = '已下架';
                         }
 
                         var cooperationType = '';
@@ -64,25 +60,25 @@ function productList(cur_page) {
                             createTime = content.createTime;
                         }
 
-                        var requirementNo = '';
-                        if(content.requirementNo != 'null' && content.requirementNo != null){
-                            requirementNo = content.requirementNo;
+                        var requirementId = '';
+                        if(content.requirementId != 'null' && content.requirementId != null){
+                            requirementId = content.requirementId;
                         }
                         tbody += "<tr>";
                         tbody += "<td>" + (i+1) + "</td>";
-                        tbody += "<td>" + requirementNo + "</td>";
+                        tbody += "<td>" + requirementId + "</td>";
                         tbody += "<td>" + content.name + "</td>";
                         tbody += "<td>" + cooperationType + "</td>";
                         tbody += "<td>" + productType + "</td>";
                         tbody += "<td>" + status + "</td>";
                         tbody += "<td>" + createTime + "</td>";
-                        if(content.status != '1'){
-                            tbody += "<td> -- </td>";
+                        if(content.productType == '1'){
+                            tbody += "<td class=\"td-manage\">" ;
+                            tbody += "<a title=\"详情\" onclick=\"x_admin_show('居间业务','./add-Intermediary.html?productId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">编辑</a>";
+                            tbody += "</td>";
                         }else{
                             tbody += "<td class=\"td-manage\">" ;
-                            /*tbody += "<a title=\"详情\" onclick=\"x_admin_show('设置接单人','./choose.html?productId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">\n" +
-                                "                    <i class=\"layui-icon\">&#xe66f;</i>\n" +
-                                "                </a>";*/
+                            tbody += "<a title=\"详情\" onclick=\"x_admin_show('承接业务','./add-underTaking.html?productId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">编辑</a>";
                             tbody += "</td>";
                         }
                         tbody += "</tr>";

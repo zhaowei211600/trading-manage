@@ -8,9 +8,6 @@ $(document).ready(function () {
         form.on('submit(sreach)', function (data) {
             typeList(null);
         });
-        form.on('select(firstType)', function(data){
-            showSecondType();
-        });
 
         $("#searchBtn").click();
     });
@@ -27,8 +24,8 @@ function typeList(cur_page) {
     param["pageNum"] = cur_page;
     param["pageSize"] = 10;
     param['status'] = $('#status').val();
-    param['parentId'] = $("#firstType").val();
-    param['id'] = $("#secondType").val();
+    param['parentId'] = 0;
+    param['id'] =  $("#firstType").val();
     var loadingIndex = layer.load(1);
     $.ajax({
         data: param,
@@ -50,12 +47,10 @@ function typeList(cur_page) {
                         var createTime = '';
                         var typeName = '';
 
-                        if(content.status == '2'){
-                            status = '已确认';
-                        }else if(content.status == '3'){
+                        if(content.status == '1'){
                             status = '已发布';
                         }else{
-                            status = '待审核'
+                            status = '已下架'
                         }
                         var type = '';
                         if(content.parentId == '0'){
@@ -73,12 +68,12 @@ function typeList(cur_page) {
                         tbody += "<td>" + (i+1) + "</td>";
                         tbody += "<td>" + typeName + "</td>";
                         tbody += "<td>" + type + "</td>";
-                        tbody += "<td>" + content.typeDesc + "</td>";
-                        tbody += "<td>" + content.process + "</td>";
-                        tbody += "<td>" + content.rules + "</td>";
+                        tbody += "<td>" + status + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         tbody += "<td class=\"td-manage\">" ;
-                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail.html?id="+content.id+"',720,550)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail-first.html?id="+content.id+"',720,550)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "|";
+                        tbody += "<a title=\"删除\" onclick=\"deleteType("+content.id+")\" href=\"javascript:;\">删除</a>" ;
                         tbody += "</td>";
                         tbody += "</tr>";
                     }
@@ -119,33 +114,24 @@ function showFirstType() {
     });
 }
 
-function showSecondType() {
-    var firstType = $("#firstType").val();
-    var tbody = "<option value=\"\">请选择</option>";
-    if(firstType == '' || firstType == null || firstType < 1){
-        $("#secondType").html(tbody);
-        form.render('select');
-        return;
-    }
-    $.ajax({
-        url: baseUrl + "/operation/type/second?parentId="+ firstType,
-        type: "get",
-        crossDomain: true == !(document.all),
-        beforeSend: function (request) {
-            request.setRequestHeader("OperaAuthorization", TOKEN);
-        },
-        success: function (resultData) {
-            var tbody = "<option value=\"\">请选择</option>";
-            if (resultData.returnCode == 200) {
-                var list = resultData.data;
-                for (var i = 0; i < list.length; i++) {
-                    var content = list[i];
-                    tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+function deleteType(typeId) {
+    layer.confirm('确认要删除该类型吗？', {skin: 'layui-layer-molv'}, function(index){
+        $.ajax({
+            url: baseUrl + "/operation/type/delete?typeId=" + typeId,
+            type: "get",
+            crossDomain: true == !(document.all),
+            beforeSend: function (request) {
+                request.setRequestHeader("OperaAuthorization", TOKEN);
+            },
+            success: function (resultData) {
+                if (resultData.returnCode == 200) {
+                    layer.msg('类型已删除!',{icon:1,time:1000});
+                    typeList(null);
+                }else {
+                    layer.msg(resultData.returnMessage,{icon:2,time:1000});
                 }
             }
-            $("#secondType").html(tbody);
-            form.render('select');
-        }
+        });
     });
 }
 

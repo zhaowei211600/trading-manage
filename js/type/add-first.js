@@ -8,23 +8,8 @@ $(function () {
             var parentId = '0';
             var patentTypeName = '';
             var typeName = $("#firstType").val();
-            var typeDesc = $("#typeDesc").val();
-            var process = $("#process").val();
-            var rules = $("#rules").val();
 
-            if (typeDesc == '' || typeDesc == null) {
-                layer.msg('请填写类型介绍', {icon: 5, time:3000});
-                return;
-            }
-            if (process == '' || process == null) {
-                layer.msg('请填写办理流程', {icon: 5, time:3000});
-                return;
-            }
-            if (rules == '' || rules == null) {
-                layer.msg('请填写分润规则', {icon: 5, time:3000});
-                return;
-            }
-            var params = {parentId: parentId, parentTypeName:patentTypeName, typeName:typeName, typeDesc: typeDesc, process: process, rules:rules};
+            var params = {parentId: parentId, parentTypeName:patentTypeName, typeName:typeName};
             var loadingIndex = layer.load(1);
             $.ajax({
                 url: baseUrl + "/operation/type/save",

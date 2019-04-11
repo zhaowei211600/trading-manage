@@ -3,35 +3,41 @@ var form = null,
     element = null,
     upload = null;
 
-var descImg = null;
+var success=0;
+var fail=0;
+var productId = null;
+var typeId = '';
+var secondTypeId = '';
+
 $(function () {
     layui.use(['form', 'layer', 'upload'], function () {
         $ = layui.jquery;
         form = layui.form, layer = layui.layer, element = layui.element , upload = layui.upload;
         initialPage(form);
         simpleUpload("preview");
-        getProductNumber();
-        showFirstType();
         form.on('submit(saveProduct)', function(data){
             var productId = $("#productId").val();
+            var id = $("#id").val();
             var budget = $("#budget").val();
             var productName = $("#productName").val();
 
             var address = $("#address").val();
-            var requirementNo = $("#requirementNo").val();
+            //var desc = $("#desc").val();
+
+            var requirementId = $("#requirementId").val();
             var descImg = $("#preview_input").val();
 
             var firstType = $("#firstType").val();
             var secondType = $("#secondType").val();
 
             var acceptingSide = $("#acceptingSide").val();
-
-            var process = $("#process").val();
             var tradeDetail = $("#tradeDetail").val();
-            var params = {'productId': productId, 'name': productName, 'budget': budget,
-                'area': address, 'requirementNo': requirementNo, 'descImg':descImg,
-                'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,
-                'process':process, 'tradeDetail':tradeDetail, 'productType':'2'};
+            var process = $("#process").val();
+
+            var params = {'id':id ,'productId': productId, 'name': productName, 'budget': budget,
+                'area': address, 'requirementId': requirementId, 'descImg':descImg,
+                'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,'process':process,
+                'tradeDetail':tradeDetail, 'productType':'2'};
             var loadingIndex = layer.load(1);
             $.ajax({
                 url: baseUrl + "/operation/product/save",
@@ -56,6 +62,32 @@ $(function () {
         form.on('select(firstType)', function(data){
             showSecondType();
         });
+
+        form.on('submit(closeProduct)', function(data){
+            var productId = $("#productId").val();
+            var id = $("#id").val();
+            var params = {'id':id};
+            var loadingIndex = layer.load(1);
+            $.ajax({
+                url: baseUrl + "/operation/product/close",
+                type: "get",
+                data: params,
+                beforeSend: function (request) {
+                    request.setRequestHeader("OperaAuthorization", TOKEN);
+                },
+                success: function (resultData) {
+                    if (resultData.returnCode == 200) {
+                        x_admin_close();
+                        parent.initPage(1, resultData.returnMessage);
+                    } else {
+                        layer.msg(resultData.returnMessage, {icon: 5, time:3000});
+                    }
+                },
+                complete: function () {
+                    layer.close(loadingIndex);
+                }
+            });
+        });
     });
 
 });
@@ -68,18 +100,18 @@ function initialPage(form) {
         displayProduct(getUrlParam('productId'), form);
     }else {
         $("#id").val('0');
+        getProductNumber();
+        showFirstType();
+        showSecondType()
     }
     $('#submitBtn').text(title);
+
 }
-/**
- * 编辑前回显
- * @param id
- */
 function displayProduct(id, form) {
     if(!id || '' == id) return;
     var loadingIndex = layer.load(1);
     $.ajax({
-        url: baseUrl + "/operation/product/findById?id=" + id,
+        url: baseUrl + "/operation/product/find?productId=" + id,
         type: "post",
         crossDomain: true == !(document.all),
         beforeSend: function (request) {
@@ -87,11 +119,32 @@ function displayProduct(id, form) {
         },
         success: function (resultData) {
             if (resultData.returnCode == 200) {
-                var menu = resultData.data;
-                $("#id").val(menu.id);
-                $("#name").val(menu.name);
-                $("#url").val(menu.url);
-                $("#order").val(menu.order);
+                var product = resultData.data;
+                $("#id").val(product.id);
+                $("#productId").val(product.productId);
+                $("#budget").val(product.budget);
+                $("#productName").val(product.name);
+
+                $("#requirementId").val(product.requirementId);
+                $("#preview_image").attr('src',"/images/"+ product.descImg);
+                $("#preview_image").show();
+                $("#preview_input").val(product.descImg);
+
+                typeId = product.firstType;
+                $("#firstType").val(product.firstType);
+                secondTypeId = product.secondType;
+                $("#secondType").val(product.secondType);
+                $("#acceptingSide").val(product.acceptingSide);
+                $("#attachmentDesc").val(product.attachmentDesc);
+                $("#tradeDetail").val(product.tradeDetail);
+                $("#address").val(product.area);
+                $("#process").val(product.process);
+
+                //$("#fileNameList").val(product.);
+                $("#publisher").val(product.publisher);
+                form.render('select');
+                showFirstType(typeId);
+                showSecondType(typeId, secondTypeId)
             }
         },
         complete: function () {
@@ -133,11 +186,7 @@ function simpleUpload(name){
         error : function() {
             //演示失败状态，并实现重传
             layer.close(load_index);
-            var demoText = $('#' + textId);
-            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-            demoText.find('.demo-reload').on('click', function() {
-                uploadInst.upload();
-            });
+            layer.msg("文件上传失败！")
         }
     });
 }
@@ -153,12 +202,13 @@ function getProductNumber() {
         success: function (resultData) {
             if (resultData.returnCode == 200) {
                 $("#productId").val(resultData.data);
+                productId = resultData.data;
             }
         }
     });
 }
 
-function showFirstType() {
+function showFirstType(typeId) {
     $.ajax({
         url: baseUrl + "/operation/type/first" ,
         type: "get",
@@ -172,7 +222,11 @@ function showFirstType() {
                 var tbody = "<option value=\"\">请选择</option>";
                 for (var i = 0; i < list.length; i++) {
                     var content = list[i];
-                    tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    if(content.id == typeId){
+                        tbody += "<option selected value=" + content.id + ">" + content.typeName + "</option>";
+                    }else{
+                        tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    }
                 }
                 $("#firstType").html(tbody);
                 form.render('select');
@@ -181,8 +235,11 @@ function showFirstType() {
     });
 }
 
-function showSecondType() {
-    var firstType = $("#firstType").val();
+function showSecondType(typeId,secondTypeId) {
+    var firstType =  $("#firstType").val();
+    if(typeId){
+        firstType = typeId
+    }
     var tbody = "<option value=\"\">请选择</option>";
     if(firstType == '' || firstType == null || firstType < 1){
         $("#secondType").html(tbody);
@@ -202,7 +259,11 @@ function showSecondType() {
                 var tbody = "<option value=\"\">请选择</option>";
                 for (var i = 0; i < list.length; i++) {
                     var content = list[i];
-                    tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    if(secondTypeId == content.id){
+                        tbody += "<option selected value=" + content.id + ">" + content.typeName + "</option>";
+                    }else{
+                        tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    }
                 }
                 $("#secondType").html(tbody);
                 form.render('select');

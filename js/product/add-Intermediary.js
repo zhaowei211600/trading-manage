@@ -7,22 +7,25 @@ var fileNameList = '';
 var success=0;
 var fail=0;
 var productId = null;
+var typeId = '';
+var secondTypeId = '';
 
 $(function () {
     layui.use(['form', 'layer', 'upload'], function () {
         $ = layui.jquery;
         form = layui.form, layer = layui.layer, element = layui.element , upload = layui.upload;
         initialPage(form);
-        getProductNumber();
-        showFirstType();
         simpleUpload("preview");
         form.on('submit(saveProduct)', function(data){
-            //var productId = $("#productId").val();
+            var productId = $("#productId").val();
+            var id = $("#id").val();
             var budget = $("#budget").val();
             var productName = $("#productName").val();
 
             var address = $("#address").val();
-            var requirementNo = $("#requirementNo").val();
+            var desc = $("#desc").val();
+
+            var requirementId = $("#requirementId").val();
             var descImg = $("#preview_input").val();
 
             var firstType = $("#firstType").val();
@@ -34,8 +37,9 @@ $(function () {
             var tradeDetail = $("#tradeDetail").val();
             var fileNameList = $("#fileNameList").val();
             var publisher = $("#publisher").val();
-            var params = {'productId': productId, 'name': productName, 'budget': budget,
-                'area': address, 'requirementNo': requirementNo, 'descImg':descImg,
+            var params = {'id':id,'productId': productId, 'name': productName, 'budget': budget,
+                'desc':desc,
+                'area': address, 'requirementId': requirementId, 'descImg':descImg,
                 'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,
                 'attachmentDesc':attachmentDesc, 'tradeDetail':tradeDetail, 'productType':'1',
                 'fileNameList':fileNameList, 'publisher':publisher};
@@ -64,6 +68,31 @@ $(function () {
             showSecondType();
         });
 
+        form.on('submit(closeProduct)', function(data){
+            var productId = $("#productId").val();
+            var id = $("#id").val();
+            var params = {'id':id};
+            var loadingIndex = layer.load(1);
+            $.ajax({
+                url: baseUrl + "/operation/product/close",
+                type: "get",
+                data: params,
+                beforeSend: function (request) {
+                    request.setRequestHeader("OperaAuthorization", TOKEN);
+                },
+                success: function (resultData) {
+                    if (resultData.returnCode == 200) {
+                        x_admin_close();
+                        parent.initPage(1, resultData.returnMessage);
+                    } else {
+                        layer.msg(resultData.returnMessage, {icon: 5, time:3000});
+                    }
+                },
+                complete: function () {
+                    layer.close(loadingIndex);
+                }
+            });
+        });
         upload.render({
             elem : ('#uploadAttachment'),
             url :  baseUrl + "/user/file/attachment?",
@@ -81,7 +110,7 @@ $(function () {
                 this.data={'productId':productId};//关键代码
                 //预读本地文件示例，不支持ie8
                 obj.preview(function(index, file, result) {
-                    $('#fileList').append('<tr><td>'+file.name+'</td></tr>')
+                    //$('#fileList').append('<tr><td>'+file.name+'</td><td onclick="deleteAttachment('+file.name+')">删除</td></tr>')
                 });
             },
             done: function(res, index, upload) {
@@ -91,6 +120,7 @@ $(function () {
                 }else{
                     success++;
                     fileNameList = fileNameList +""+res.data.fileName+",";
+                    $('#fileList').append("<tr><td>"+res.data.originalName+"</td><td><a href='#' onclick='deleteAttachment(this,\'"+res.data.fileName+"\')\'>删除</a></td></tr>")
                     $('#fileNameList').val(fileNameList);
                 }
             },
@@ -113,8 +143,12 @@ function initialPage(form) {
         displayProduct(getUrlParam('productId'), form);
     }else {
         $("#id").val('0');
+        getProductNumber();
+        showFirstType();
+        showSecondType()
     }
     $('#submitBtn').text(title);
+
 }
 /**
  * 编辑前回显
@@ -124,7 +158,7 @@ function displayProduct(id, form) {
     if(!id || '' == id) return;
     var loadingIndex = layer.load(1);
     $.ajax({
-        url: baseUrl + "/operation/product/findById?id=" + id,
+        url: baseUrl + "/operation/product/find?productId=" + id,
         type: "post",
         crossDomain: true == !(document.all),
         beforeSend: function (request) {
@@ -132,11 +166,33 @@ function displayProduct(id, form) {
         },
         success: function (resultData) {
             if (resultData.returnCode == 200) {
-                var menu = resultData.data;
-                $("#id").val(menu.id);
-                $("#name").val(menu.name);
-                $("#url").val(menu.url);
-                $("#order").val(menu.order);
+                var product = resultData.data;
+                $("#id").val(product.id);
+                $("#productId").val(product.productId);
+                $("#budget").val(product.budget);
+                $("#productName").val(product.name);
+
+                $("#requirementId").val(product.requirementId);
+                $("#preview_image").attr('src',"/images/"+product.descImg);
+                $("#preview_image").show();
+                $("#preview_input").val(product.descImg);
+
+                typeId = product.firstType;
+                $("#firstType").val(product.firstType);
+                secondTypeId = product.secondType;
+                $("#secondType").val(product.secondType);
+                $("#acceptingSide").val(product.acceptingSide);
+                $("#attachmentDesc").val(product.attachmentDesc);
+                $("#tradeDetail").val(product.tradeDetail);
+                $("#address").val(product.area);
+                $("#desc").val(product.desc);
+
+                //$("#fileNameList").val(product.);
+                $("#publisher").val(product.publisher);
+                form.render('select');
+                findAttachment(product.productId);
+                showFirstType(typeId);
+                showSecondType(typeId, secondTypeId)
             }
         },
         complete: function () {
@@ -200,7 +256,7 @@ function getProductNumber() {
     });
 }
 
-function showFirstType() {
+function showFirstType(typeId) {
     $.ajax({
         url: baseUrl + "/operation/type/first" ,
         type: "get",
@@ -214,7 +270,11 @@ function showFirstType() {
                 var tbody = "<option value=\"\">请选择</option>";
                 for (var i = 0; i < list.length; i++) {
                     var content = list[i];
-                    tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    if(content.id == typeId){
+                        tbody += "<option selected value=" + content.id + ">" + content.typeName + "</option>";
+                    }else{
+                        tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    }
                 }
                 $("#firstType").html(tbody);
                 form.render('select');
@@ -223,8 +283,11 @@ function showFirstType() {
     });
 }
 
-function showSecondType() {
-    var firstType = $("#firstType").val();
+function showSecondType(typeId,secondTypeId) {
+    var firstType =  $("#firstType").val();
+    if(typeId){
+        firstType = typeId
+    }
     var tbody = "<option value=\"\">请选择</option>";
     if(firstType == '' || firstType == null || firstType < 1){
         $("#secondType").html(tbody);
@@ -244,7 +307,11 @@ function showSecondType() {
                 var tbody = "<option value=\"\">请选择</option>";
                 for (var i = 0; i < list.length; i++) {
                     var content = list[i];
-                    tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    if(secondTypeId == content.id){
+                        tbody += "<option selected value=" + content.id + ">" + content.typeName + "</option>";
+                    }else{
+                        tbody += "<option value=" + content.id + ">" + content.typeName + "</option>";
+                    }
                 }
                 $("#secondType").html(tbody);
                 form.render('select');
@@ -252,3 +319,47 @@ function showSecondType() {
         }
     });
 }
+
+function deleteAttachment(row,filePath) {
+    $.ajax({
+        url: baseUrl + "/operation/product/disable?filePath="+ filePath ,
+        type: "post",
+        crossDomain: true == !(document.all),
+        beforeSend: function (request) {
+            request.setRequestHeader("OperaAuthorization", TOKEN);
+        },
+        success: function (resultData) {
+            if (resultData.returnCode == 200) {
+                var i = row.parentNode.parentNode.rowIndex;
+                document.getElementById('fileList').deleteRow(i);
+            }
+        }
+    });
+}
+
+function findAttachment(productId) {
+    $.ajax({
+        url: baseUrl + "/operation/product/attachment?productId="+ productId ,
+        type: "post",
+        crossDomain: true == !(document.all),
+        beforeSend: function (request) {
+            request.setRequestHeader("OperaAuthorization", TOKEN);
+        },
+        success: function (resultData) {
+            if (resultData.returnCode == 200) {
+                var list = resultData.data;
+                var tbody = "";
+                var fileNameList = '';
+                for (var i = 0; i < list.length; i++) {
+                    var content = list[i];
+                    tbody += "<tr><td>"+content.fileName+"</td><td><a href='#' onclick=\"deleteAttachment(this,\'"+content.filePath+"\')\">删除</a></td></tr>";
+                    fileNameList += content.filePath + ",";
+
+                }
+                $('#fileNameList').val(fileNameList);
+                $('#fileList').append(tbody);
+            }
+        }
+    });
+}
+

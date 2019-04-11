@@ -42,11 +42,9 @@ function menuList(cur_page) {
                         tbody += "<tr>";
                         tbody += "<td>" + content.name + "</td>";
                         tbody += "<td class=\"td-manage\">" +
-                            "<a title=\"编辑\"  onclick=\"x_admin_show('编辑菜单','./menu-operation.html?menuId="+content.id+"&type=1',600,400)\" href=\"javascript:;\">\n" +
-                            "<i class=\"layui-icon\">&#xe642;</i></a>";
-                        tbody += "<a title=\"删除\" onclick=\"deleteMenu("+content.id+")\" href=\"javascript:;\">\n" +
-                            "                    <i class=\"layui-icon\">&#xe640;</i>\n" +
-                            "                </a></td>";
+                            "<a title=\"编辑\"  onclick=\"x_admin_show('编辑菜单','./menu-operation.html?menuId="+content.id+"&type=1',600,400)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "|";
+                        tbody += "<a title=\"删除\" onclick=\"deleteMenu("+content.id+")\" href=\"javascript:;\">删除</a></td>";
                         tbody += "</tr>";
                     }
                     $('#menuList').html(tbody);

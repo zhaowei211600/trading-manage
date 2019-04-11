@@ -55,11 +55,9 @@ function roleList(cur_page) {
                             tbody += "<td>" + content.name + "</td>";
                             tbody += "<td>" + menuName + "</td>";
                             tbody += "<td class=\"td-manage\">" +
-                                "<a title=\"编辑\"  onclick=\"x_admin_show('编辑角色','./role-operation.html?roleId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">\n" +
-                                "<i class=\"layui-icon\">&#xe642;</i></a>";
-                            tbody += "<a title=\"删除\" onclick=\"deleteRole("+content.roleId+")\" href=\"javascript:;\">\n" +
-                                "                    <i class=\"layui-icon\">&#xe640;</i>\n" +
-                                "                </a></td>";
+                                "<a title=\"编辑\"  onclick=\"x_admin_show('编辑角色','./role-operation.html?roleId="+content.id+"&type=1',800,600)\" href=\"javascript:;\">编辑</a>";
+                            tbody += "|";
+                            tbody += "<a title=\"删除\" onclick=\"deleteRole("+content.roleId+")\" href=\"javascript:;\">删除</a></td>";
                             tbody += "</tr>";
                         }
                     }
