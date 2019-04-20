@@ -29,6 +29,7 @@ function typeList(cur_page) {
     param['status'] = $('#status').val();
     param['parentId'] = $("#firstType").val();
     param['id'] = $("#secondType").val();
+    param['type'] = '2';
     var loadingIndex = layer.load(1);
     $.ajax({
         data: param,
@@ -78,7 +79,9 @@ function typeList(cur_page) {
                         tbody += "<td>" + content.rules + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         tbody += "<td class=\"td-manage\">" ;
-                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail.html?id="+content.id+"',720,550)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail.html?id="+content.id+"&type=1',720,550)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "|";
+                        tbody += "<a title=\"删除\" onclick=\"deleteType("+content.id+")\" href=\"javascript:;\">删除</a>" ;
                         tbody += "</td>";
                         tbody += "</tr>";
                     }
@@ -146,6 +149,27 @@ function showSecondType() {
             $("#secondType").html(tbody);
             form.render('select');
         }
+    });
+}
+
+function deleteType(typeId) {
+    layer.confirm('确认要删除该类型吗？', {skin: 'layui-layer-molv'}, function(index){
+        $.ajax({
+            url: baseUrl + "/operation/type/delete?typeId=" + typeId,
+            type: "get",
+            crossDomain: true == !(document.all),
+            beforeSend: function (request) {
+                request.setRequestHeader("OperaAuthorization", TOKEN);
+            },
+            success: function (resultData) {
+                if (resultData.returnCode == 200) {
+                    layer.msg('类型已删除!',{icon:1,time:1000});
+                    typeList(null);
+                }else {
+                    layer.msg(resultData.returnMessage,{icon:2,time:1000});
+                }
+            }
+        });
     });
 }
 

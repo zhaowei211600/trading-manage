@@ -52,6 +52,7 @@ function displayUser(id, form) {
                 $("#email").val(user.email);
                 $("#contactPhone").val(user.contactPhone);
                 $("#score").val(user.score);
+                $("#cardImg").attr('src','/images/' + user.cardImg);
 
                 if(user.status != null){
                     $("#status").val(user.status);

@@ -46,6 +46,7 @@ function requirementList(cur_page) {
                         var userType = '';
                         var userStatus = '';
                         var createTime = '';
+                        var orgName = '';
                         if(content.status == '2'){
                             status = '已确认';
                         }else if(content.status == '3'){
@@ -71,10 +72,13 @@ function requirementList(cur_page) {
                         if(content.createTime != 'null' && content.createTime != null){
                             createTime = content.createTime;
                         }
+                        if(content.orgName){
+                            orgName = content.orgName;
+                        }
                         tbody += "<tr>";
                         tbody += "<td>" + (i+1) + "</td>";
                         tbody += "<td>" + content.phone + "</td>";
-                        tbody += "<td>" + content.orgName + "</td>";
+                        tbody += "<td>" + orgName + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         tbody += "<td>" + status + "</td>";
                         tbody += "<td>" + userType + "</td>";

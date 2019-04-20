@@ -3,9 +3,8 @@ $(function () {
     layui.use(['form', 'layer'], function () {
         $ = layui.jquery;
         form = layui.form, layer = layui.layer;
-        showFirstType();
+        initialPage();
         displayType(getUrlParam('id'), form);
-
         //监听提交
         form.on('submit(saveType)', function (data) {
             var id = $("#id").val();
@@ -53,6 +52,19 @@ $(function () {
 
 });
 
+function initialPage(form) {
+    var page_type = getUrlParam('type');
+    var title = '添加';
+    if(page_type && page_type == 1) {
+        title = '编辑';
+        showFirstType();
+    }else {
+        $("#id").val('0');
+    }
+    $('#submitBtn').text(title);
+
+}
+
 /**
  * 编辑前回显
  * @param id
@@ -72,12 +84,12 @@ function displayType(id, form) {
             if (resultData.returnCode == 200) {
                 type = resultData.data;
                 $("#id").val(type.id);
-                $("#firstType").val(type.parentId);
+                //$("#firstType").val(type.parentId);
                 $("#secondType").val(type.typeName);
                 $("#typeDesc").val(type.typeDesc);
                 $("#process").val(type.process);
                 $("#rules").val(type.rules);
-                $("#firstType").attr("disabled","disabled");
+                //$("#firstType").attr("disabled","disabled");
                 form.render('select');
             }
         },
@@ -91,6 +103,7 @@ function showFirstType() {
     $.ajax({
         url: baseUrl + "/operation/type/first" ,
         type: "get",
+        async:false,
         crossDomain: true == !(document.all),
         beforeSend: function (request) {
             request.setRequestHeader("OperaAuthorization", TOKEN);

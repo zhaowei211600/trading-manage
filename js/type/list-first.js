@@ -26,6 +26,7 @@ function typeList(cur_page) {
     param['status'] = $('#status').val();
     param['parentId'] = 0;
     param['id'] =  $("#firstType").val();
+    param['type'] = '1';
     var loadingIndex = layer.load(1);
     $.ajax({
         data: param,
@@ -71,7 +72,7 @@ function typeList(cur_page) {
                         tbody += "<td>" + status + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         tbody += "<td class=\"td-manage\">" ;
-                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail-first.html?id="+content.id+"',720,550)\" href=\"javascript:;\">编辑</a>";
+                        tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./add-first.html?id="+content.id+"&type=1',460,200)\" href=\"javascript:;\">编辑</a>";
                         tbody += "|";
                         tbody += "<a title=\"删除\" onclick=\"deleteType("+content.id+")\" href=\"javascript:;\">删除</a>" ;
                         tbody += "</td>";
