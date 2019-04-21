@@ -37,12 +37,14 @@ $(function () {
             var tradeDetail = $("#tradeDetail").val();
             var fileNameList = $("#fileNameList").val();
             var publisher = $("#publisher").val();
+            var auditStatus = $("#auditStatus").val();
+
             var params = {'id':id,'productId': productId, 'name': productName, 'budget': budget,
                 'desc':desc,
                 'area': address, 'requirementId': requirementId, 'descImg':descImg,
                 'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,
                 'attachmentDesc':attachmentDesc, 'tradeDetail':tradeDetail, 'productType':'1',
-                'fileNameList':fileNameList, 'publisher':publisher};
+                'fileNameList':fileNameList, 'publisher':publisher, 'auditStatus':auditStatus};
             var loadingIndex = layer.load(1);
             $.ajax({
                 url: baseUrl + "/operation/product/save",
@@ -186,6 +188,8 @@ function displayProduct(id, form) {
                 $("#tradeDetail").val(product.tradeDetail);
                 $("#address").val(product.area);
                 $("#desc").val(product.desc);
+                $("#auditStatus").val(product.auditStatus);
+
 
                 //$("#fileNameList").val(product.);
                 $("#publisher").val(product.publisher);

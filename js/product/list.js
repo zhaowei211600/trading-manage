@@ -23,6 +23,7 @@ function productList(cur_page) {
     param["pageSize"] = 10;
     param['productName'] = $('#productName').val();
     param['status'] = $('#status').val();
+    param['auditStatus'] = $('#auditStatus').val();
     var loadingIndex = layer.load(1);
     $.ajax({
         data: param,
@@ -41,10 +42,17 @@ function productList(cur_page) {
                     for (var i = 0; i < list.length; i++) {
                         var content = list[i];
                         var status = '';
+                        var auditStatus = '';
                         if(content.status == '1'){
                             status = '已发布';
                         }else if(content.status == '2'){
                             status = '已下架';
+                        }
+
+                        if(content.auditStatus == '1'){
+                            auditStatus = '已认证';
+                        }else if(content.auditStatus == '2'){
+                            auditStatus = '未认证';
                         }
 
                         var cooperationType = '';
@@ -71,6 +79,7 @@ function productList(cur_page) {
                         tbody += "<td>" + cooperationType + "</td>";
                         tbody += "<td>" + productType + "</td>";
                         tbody += "<td>" + status + "</td>";
+                        tbody += "<td>" + auditStatus + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         if(content.productType == '1'){
                             tbody += "<td class=\"td-manage\">" ;

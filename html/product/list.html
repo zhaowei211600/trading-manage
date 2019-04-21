@@ -42,6 +42,16 @@
                     <div class="layui-input-inline">
                         <input type="text" name="productName" id="productName" placeholder="请输入项目名称" autocomplete="off" class="layui-input">
                     </div>
+                    <label class="layui-form-mid" for="status">认证状态</label>
+                    <div class="layui-input-inline">
+                        <select name="auditStatus" id="auditStatus" lay-verify="required">
+                            <option value="" selected="selected">全部</option>
+                            <option value="1">已认证</option>
+                            <option value="2">未认证</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
                     <label class="layui-form-mid" for="status">项目状态</label>
                     <div class="layui-input-inline">
                         <select name="status" id="status" lay-verify="required">
@@ -74,6 +84,7 @@
             <th>合作类型</th>
             <th>项目类型</th>
             <th>发布状态</th>
+            <th>认证状态</th>
             <th>发布时间</th>
             <th>操作</th>
         </tr>

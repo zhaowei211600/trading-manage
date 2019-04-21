@@ -34,10 +34,13 @@ $(function () {
             var tradeDetail = $("#tradeDetail").val();
             var process = $("#process").val();
 
+            var auditStatus = $("#auditStatus").val();
+
+
             var params = {'id':id ,'productId': productId, 'name': productName, 'budget': budget,
                 'area': address, 'requirementId': requirementId, 'descImg':descImg,
                 'firstType':firstType, 'secondType':secondType, 'acceptingSide':acceptingSide,'process':process,
-                'tradeDetail':tradeDetail, 'productType':'2'};
+                'tradeDetail':tradeDetail, 'productType':'2', 'auditStatus':auditStatus};
             var loadingIndex = layer.load(1);
             $.ajax({
                 url: baseUrl + "/operation/product/save",
@@ -139,6 +142,7 @@ function displayProduct(id, form) {
                 $("#tradeDetail").val(product.tradeDetail);
                 $("#address").val(product.area);
                 $("#process").val(product.process);
+                $("#auditStatus").val(product.auditStatus);
 
                 //$("#fileNameList").val(product.);
                 $("#publisher").val(product.publisher);
