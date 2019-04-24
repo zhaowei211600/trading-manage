@@ -51,12 +51,10 @@ function typeList(cur_page) {
                         var createTime = '';
                         var typeName = '';
 
-                        if(content.status == '2'){
-                            status = '已确认';
-                        }else if(content.status == '3'){
+                        if(content.status == '1'){
                             status = '已发布';
                         }else{
-                            status = '待审核'
+                            status = '已下架'
                         }
                         var type = '';
                         if(content.parentId == '0'){
@@ -77,6 +75,7 @@ function typeList(cur_page) {
                         tbody += "<td>" + content.typeDesc + "</td>";
                         tbody += "<td>" + content.process + "</td>";
                         tbody += "<td>" + content.rules + "</td>";
+                        tbody += "<td>" + status + "</td>";
                         tbody += "<td>" + createTime + "</td>";
                         tbody += "<td class=\"td-manage\">" ;
                         tbody += "<a title=\"编辑\"  onclick=\"x_admin_show('编辑','./detail.html?id="+content.id+"&type=1',720,550)\" href=\"javascript:;\">编辑</a>";

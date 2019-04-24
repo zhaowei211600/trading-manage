@@ -8,6 +8,7 @@ $(function () {
         //监听提交
         form.on('submit(saveType)', function (data) {
             var id = $("#id").val();
+            var parentId = $("#firstType").val();
             var typeDesc = $("#typeDesc").val();
             var process = $("#process").val();
             var rules = $("#rules").val();
@@ -24,7 +25,7 @@ $(function () {
                 layer.msg('请填写分润规则', {icon: 5, time:3000});
                 return;
             }
-            var params = {id: id, typeDesc: typeDesc, process: process, rules:rules};
+            var params = {id: id, 'parentId':parentId,typeDesc: typeDesc, process: process, rules:rules};
             var loadingIndex = layer.load(1);
             $.ajax({
                 url: baseUrl + "/operation/type/save",
@@ -84,12 +85,12 @@ function displayType(id, form) {
             if (resultData.returnCode == 200) {
                 type = resultData.data;
                 $("#id").val(type.id);
-                //$("#firstType").val(type.parentId);
+                $("#firstType").val(type.parentId);
                 $("#secondType").val(type.typeName);
                 $("#typeDesc").val(type.typeDesc);
                 $("#process").val(type.process);
                 $("#rules").val(type.rules);
-                //$("#firstType").attr("disabled","disabled");
+                $("#firstType").attr("disabled","disabled");
                 form.render('select');
             }
         },

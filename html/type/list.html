@@ -11,6 +11,17 @@
     <link rel="stylesheet" href="../../lay/css/font.css">
     <link rel="stylesheet" href="../../lay/lib/layui/css/layui.css">
     <link rel="stylesheet" href="../../lay/css/xadmin.css">
+    <style type="text/css">
+        table { table-layout: fixed;}
+
+        .table tr td {
+            text-overflow: ellipsis; /* for IE */
+            -moz-text-overflow: ellipsis; /* for Firefox,mozilla */
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: left
+        }
+    </style>
 
 </head>
 
@@ -74,7 +85,7 @@
         <button class="layui-btn" onclick="x_admin_show('添加分类','./add-second.html?type=0',720,550)"><i class="layui-icon"></i>二级分类</button>
         <span id="totalNum" class="x-right" style="line-height:40px"></span>
     </xblock>
-    <table id="worker" class="layui-table">
+    <table id="worker" class="layui-table table">
         <thead>
         <tr>
             <th>序号</th>
@@ -83,6 +94,7 @@
             <th>项目介绍</th>
             <th>办理流程</th>
             <th>分润规则</th>
+            <th>状态</th>
             <th>创建时间</th>
             <th>操作</th>
         </tr>

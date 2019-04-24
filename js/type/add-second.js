@@ -8,7 +8,6 @@ $(function () {
         form.on('submit(saveSecondType)', function (data) {
             var parentId = $("#firstType").val();
             var patentTypeName = $("#firstType").find("option:selected").text();
-            alert(patentTypeName);
             var typeName = $("#secondType").val();
             var typeDesc = $("#typeDesc").val();
             var process = $("#process").val();
